@@ -25,7 +25,7 @@
             }
 
             // Create WebSocket connection
-            const wsUrl = `ws://localhost:8001/api/ws/${username}?room_id=${currentRoom}`;
+            const wsUrl = `ws://localhost:8001/ws/${username}?room_id=${currentRoom}`;
             console.log(wsUrl)
             ws = new WebSocket(wsUrl);
            

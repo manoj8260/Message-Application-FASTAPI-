@@ -4,7 +4,8 @@ from fastapi import FastAPI
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi import Request
-from router.ws_router import router as websocket_router
+from router.ws_router import ws_router 
+from router.api_router import api_router
 
 
 # Configure logging
@@ -26,7 +27,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 # Include WebSocket router
-app.include_router(websocket_router,prefix='/api',tags=["WebSocket"])
+app.include_router(ws_router, prefix='/ws', tags=["WebSocket"])
+app.include_router(api_router,prefix='/api',tags=["Api"])
 
 templates = Jinja2Templates(
     directory="templates"

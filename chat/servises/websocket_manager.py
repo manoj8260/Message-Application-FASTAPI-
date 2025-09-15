@@ -122,20 +122,12 @@ class WebSocketManager:
     async def get_user_room(self, username: str) -> str:
         """
         Get the room a user is currently in.
-        
-        Args:
-            username: The username
-            
-        Returns:
-            The room ID the user is in
+
         """
         return self.user_rooms.get(username, "general")
 
     def get_all_rooms(self) -> List[str]:
         """
         Get list of all active rooms.
-        
-        Returns:
-            List of room IDs
         """
         return list(self.room_users.keys())
