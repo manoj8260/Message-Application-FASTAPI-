@@ -10,7 +10,7 @@ from schema import SignupModel, SignInModel
 from servises import AuthServices
 from utils import verify_password ,create_token
 from database.redis import blacklist_token,is_token_blacklisted
-
+from errors import UserAleradyExists
 from dependency import (TokenBearer,AccessTokenBearer,RefreshTokenBearer ,get_current_user)
 
 
@@ -27,10 +27,7 @@ refresh_token = RefreshTokenBearer()
 async def signup(user: SignupModel, session: AsyncSession = Depends(get_session)):
     exist_user = await auth_services.user_exists(email=user.email, session=session)
     if exist_user:
-        raise HTTPException(
-            status_code=400,
-            detail={"message": "user already exists"}
-        )
+         raise UserAleradyExists()
     new_user = await auth_services.create_user(user, session)
     return new_user
 
@@ -59,7 +56,7 @@ async def signup(login_data:SignInModel,session:AsyncSession = Depends(get_sessi
         )
         return  JSONResponse(
             content= {
-                'messgae' : 'Login Sucessfully',
+                'message' : 'Login Sucessfully',
                 'user' : 
                     {
                   'email' : user.email,

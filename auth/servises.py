@@ -20,7 +20,7 @@ class  AuthServices:
     
     async def user_exists(self,email:str,session:AsyncSession):
        """Check if a user with this email exists.""" 
-       get_user=  await  self.get_user_byemail(email,session)
+       get_user=  await  self.get_user_by_email(email,session)
        return  get_user is not None
         
    
