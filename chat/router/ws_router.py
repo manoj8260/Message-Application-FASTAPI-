@@ -7,11 +7,11 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter()
+ws_router = APIRouter()
 manager = WebSocketManager()
 
 
-@router.websocket("/ws/{username}")
+@ws_router.websocket("/{username}")
 async def websocket_endpoint(websocket: WebSocket ,username : str ,room_id : str  = Query(default='general')):
     """
     WebSocket endpoint for chat communication.
@@ -45,28 +45,3 @@ async def websocket_endpoint(websocket: WebSocket ,username : str ,room_id : str
         await manager.disconnect(username)  
         
 
-@router.get('/rooms')
-async def get_rooms():
-    """
-    Get list of all active rooms.
-    
-    Returns:
-        List of active room names
-    """
-    return {"rooms": manager.get_all_rooms()}
-
-
-@router.get('/rooms/{room_id}/users')
-async def get_room_users(room_id: str):
-    """
-    Get list of users in a specific room.
-    
-    Args:
-        room_id: The room ID
-        
-    Returns:
-        List of users in the room
-    """
-    users = await manager.get_room_users(room_id)
-    return {"room_id": room_id, "users": users}              
-    

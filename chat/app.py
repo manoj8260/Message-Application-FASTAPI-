@@ -1,11 +1,22 @@
 import uvicorn
 import logging
 from fastapi import FastAPI
-from fastapi.templating import Jinja2Templates
+from contextlib import asynccontextmanager
 from fastapi.staticfiles import StaticFiles
 from fastapi import Request
-from router.ws_router import router as websocket_router
+from router.ws_router import ws_router 
+from router.api_router import api_router
+from middleware import register_middleware
 
+
+@asynccontextmanager
+async def life_span(app:FastAPI):
+    print("✅ Starting chat server...")
+    
+    # await init_db()
+    yield
+    
+    print("🛑 Stopping chat server...")
 
 # Configure logging
 logging.basicConfig(
@@ -18,30 +29,20 @@ app = FastAPI(
     title="WebSocket Chat Application",
     description="A real-time chat application using FastAPI and WebSockets",
     version=version,
+    lifespan=life_span,
     docs_url="/docs",
     redoc_url="/redoc"
 )
-# Mount static files (for CSS, JS, etc.)
-app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 # Include WebSocket router
-app.include_router(websocket_router,prefix='/api',tags=["WebSocket"])
+app.include_router(ws_router, prefix='/ws', tags=["WebSocket"])
+app.include_router(api_router,prefix='/api',tags=["Api"])
 
-templates = Jinja2Templates(
-    directory="templates"
-)
+# register middleware
+register_middleware(app)
 
-@app.get('/')
-async def get_chat_page(request : Request):
-    """
-    Serve the main chat page.
-    """
-    return templates.TemplateResponse(
-        request ,
-        'chat.html',
-        {}
-    )
+
 @app.get("/health")
 async def health_check():
     """
@@ -57,7 +58,7 @@ if __name__ == "__main__":
     uvicorn.run(
         "app:app",
         host="localhost",
-        port=8001,
+        port=8003,
         reload=True,
         log_level="info"
     )

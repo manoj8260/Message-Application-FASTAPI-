@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/chatpage.css">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Chat Rooms</h2>
+            </div>
+            <div class="room-list-container">
+                <ul id="roomList" class="room-list"></ul>
+            </div>
+            <div class="sidebar-footer">
+                <div class="create-room-form">
+                    <input type="text" id="newRoomInput" placeholder="Create or join room..." maxlength="20">
+                    <button id="createRoomBtn" title="Create Room">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </button>
+                </div>
+                <div id="userProfile" class="user-profile hidden">
+                    <span id="profileUsername"></span>
+                    <button id="logoutBtn" title="Logout">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="login-section" id="loginSection">
+                <div class="login-form">
+                    <h1>Welcome to ConnectSphere</h1>
+                    <p>Enter your details to start chatting.</p>
+                    <div class="input-group">
+                        <input type="text" id="usernameInput" placeholder="Enter your username" maxlength="20">
+                        <input type="text" id="roomInput" placeholder="Initial room (e.g., general)" maxlength="20">
+                    </div>
+                    <button onclick="connect()">Join Chat</button>
+                </div>
+            </div>
+
+            <div class="chat-header hidden" id="chatHeader">
+                <h1 id="currentRoomName">Select a Room</h1>
+                <div class="status" id="connectionStatus">
+                    <span class="offline-indicator"></span>Disconnected
+                </div>
+            </div>
+
+            <div id="messages" class="messages">
+                 <div class="welcome-message">
+                    <p>Please log in and select a room to start chatting.</p>
+                </div>
+            </div>
+
+            <div class="message-form hidden" id="messageForm">
+                <div class="message-input-group">
+                    <input type="text" id="messageInput" placeholder="Type your message...">
+                    <button onclick="sendMessage()" title="Send Message">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/chatpage.js"></script>
+</body>
+</html>

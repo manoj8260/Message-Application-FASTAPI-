@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 from fastapi.requests import Request
 from fastapi.responses import JSONResponse
@@ -5,16 +6,17 @@ from contextlib import asynccontextmanager
 from database.connection import init_db
 from routes import auth_router
 from errors import AuthOrUserException
+from middleware import register_middleware
 
 
 @asynccontextmanager
 async def life_span(app:FastAPI):
-    print("✅ Starting the server...")
+    print("✅ Starting auth server...")
     
     # await init_db()
     yield
     
-    print("🛑 Stopping the server...")
+    print("🛑 Stopping auth server...")
 
 version ='v1'
 app =FastAPI(
@@ -23,6 +25,9 @@ app =FastAPI(
     version=version,
     lifespan=life_span 
 )
+
+# register middleware
+register_middleware(app)
 
 @app.exception_handler(AuthOrUserException)
 async def exception_handler(request : Request, exc :  AuthOrUserException):
@@ -37,3 +42,16 @@ async def exception_handler(request : Request, exc :  AuthOrUserException):
 
 
 app.include_router(auth_router,prefix=f'/api/{version}/auth' , tags=['User'])
+
+if __name__ == "__main__":
+    uvicorn.run(
+        "main:app",
+        host="localhost",
+        port=8002,
+        reload=True,
+        log_level="info"
+    )
+
+
+
+

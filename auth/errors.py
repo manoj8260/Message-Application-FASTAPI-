@@ -1,6 +1,4 @@
 
-
-
 class AuthOrUserException(Exception):
     '''This is the base class for all the Auth/User errors'''
     def __init__(self, message : str , status_code : int =400,resulation :str = "Contact support"):
